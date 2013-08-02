@@ -5,13 +5,14 @@ class Vertex:
 	    self.children = set()
 	    self.parents = set()
 
-
 graph = {}
 
 # create the graph
 for line in sys.stdin:
 	line = line.rstrip("\n");
 	edge = line.split("\t")
+
+	# ignore lines that don't fit the format
 	if len(edge) == 2:
 		input = edge[0]
 		output = edge[1]
@@ -27,8 +28,8 @@ for line in sys.stdin:
 # process the graph to get rid of vertices which have
 # one input and one output
 for key, value in graph.iteritems():
-	# connect neighbors directly
 	if len(value.parents) == 1 and len(value.children) == 1:
+		# connect neighbors directly
 		parent = list(value.parents)[0]
 		child = list(value.children)[0]
 
@@ -40,8 +41,8 @@ for key, value in graph.iteritems():
 		graph[child].parents.add(parent)
 		graph[child].parents.remove(key)
 
-		# Removing the item from the dictionary causes problems with
-		# the loop. Instead, mark it as having no parents and children.
+		# removing the item from the dictionary causes problems with
+		# the loop, so instead, mark it as having no parents and children
 		value.parents = value.children = 0
 
 # print the graph
